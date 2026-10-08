@@ -1,16 +1,60 @@
-# React + Vite
+# Ứng dụng Quản lý Điểm Sinh viên
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Bài thực hành TH01 — Lập trình Web 2026
 
-Currently, two official plugins are available:
+- **Sinh viên:** Nguyễn Thế Lâm
+- **Mã sinh viên:** B25DCCC131
+- **Nhánh:** `TH01`
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Công nghệ
 
-## React Compiler
+React 19 + Vite 8 (JavaScript thuần, không dùng thư viện UI ngoài).
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Cách chạy
 
-## Expanding the Oxlint configuration
+```bash
+npm install
+npm run dev
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+Mở trình duyệt tại địa chỉ Vite in ra (mặc định `http://localhost:5173`).
+
+## Cấu trúc component
+
+```
+App                       component CHA - quản lý state chính (students, filter)
+├── StudentForm           form nhập liệu + ràng buộc dữ liệu
+├── Statistics            tổng số sinh viên, điểm trung bình (.reduce)
+├── FilterBar             nút lọc Tất cả / Giỏi / Trượt môn
+└── StudentTable          component CON - nhận danh sách qua props
+    └── StudentItem       component CHÁU - hiển thị 1 dòng sinh viên
+```
+
+Dữ liệu mẫu đặt riêng tại `src/data/students.js` (5 sinh viên).
+
+## Đối chiếu yêu cầu đề bài
+
+| Yêu cầu | Thực hiện |
+|---|---|
+| Danh sách mẫu tối thiểu 3 sinh viên | 5 sinh viên trong `src/data/students.js` |
+| Hiển thị dạng bảng | `StudentTable` + `StudentItem` |
+| Form thêm (Họ tên, Điểm, Lớp) | `StudentForm` |
+| Thêm không mất dữ liệu cũ | `setStudents([...students, student])` |
+| Báo lỗi khi để trống | Kiểm tra `.trim() === ''` |
+| Báo lỗi khi điểm < 0 hoặc > 10 | Kiểm tra `diem < 0 \|\| diem > 10` |
+| Xoá sinh viên | `handleDelete` dùng `.filter()` theo `id` |
+| Lọc Giỏi (>= 8) / Trượt (< 5) | `FilterBar` + `filteredStudents` |
+| Tổng số sinh viên, điểm trung bình | `Statistics` dùng `.reduce()` |
+
+## Quy chuẩn ES6
+
+| Yêu cầu | Vị trí tiêu biểu |
+|---|---|
+| `let` / `const`, không dùng `var` | toàn bộ mã nguồn |
+| Arrow Functions | tất cả component và handler |
+| Destructuring (props và state) | `({ student, index, onDelete })`, `const { id, name, score, class: className } = student` |
+| Template Literals | `` `${score} / 10` ``, `` `btn-filter ${filter === value ? 'active' : ''}` `` |
+| `.map()` | `StudentTable`, `FilterBar` |
+| `.filter()` | xoá sinh viên, lọc danh sách, đếm Giỏi/Trượt |
+| `.reduce()` | tính tổng điểm trong `Statistics` |
+| Spread operator | `[...students, student]`, `{ ...form, [field]: value }` |

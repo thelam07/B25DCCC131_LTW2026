@@ -1,122 +1,193 @@
-:root {
-  --border: #d7dce5;
-  --primary: #2563eb;
+/* src/index.css */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  background: #f5f7fb;
-  color: #1f2430;
-  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
+  background: #f1f5f9;
+  color: #1e293b;
+  line-height: 1.5;
+  padding: 24px 16px;
 }
 
 .app {
-  max-width: 860px;
+  max-width: 900px;
   margin: 0 auto;
-  padding: 24px 16px 48px;
 }
 
-h1 {
-  font-size: 24px;
-  text-align: center;
+.app>h1 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  color: #0f172a;
 }
 
+/* ===== Form ===== */
 .student-form {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.student-form h2 {
+  font-size: 18px;
+  margin-bottom: 14px;
+}
+
+.student-form label {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0 12px 12px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
 }
 
 .student-form input {
-  flex: 1 1 160px;
-  padding: 8px 10px;
-  border: 1px solid var(--border);
+  padding: 9px 12px;
+  border: 1px solid #cbd5e1;
   border-radius: 6px;
-  font-size: 14px;
+  font-size: 15px;
+  font-family: inherit;
+  width: 220px;
 }
 
+.student-form input:focus {
+  outline: 2px solid #2563eb;
+  outline-offset: -1px;
+  border-color: #2563eb;
+}
+
+/* ===== Nút ===== */
 button {
-  padding: 8px 14px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  background: #fff;
-  font-size: 14px;
   cursor: pointer;
-}
-
-.student-form button {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
-}
-
-.error {
-  margin: 0 0 12px;
-  padding: 8px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  border: none;
   border-radius: 6px;
-  background: #fdecec;
-  color: #c0392b;
-}
-
-.filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  margin-bottom: 12px;
-}
-
-.filter.active {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #fff;
-}
-
-.stats {
-  margin: 0 0 12px;
+  padding: 10px 18px;
   font-weight: 600;
 }
 
+.btn-add {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn-add:hover {
+  background: #1d4ed8;
+}
+
+.btn-delete {
+  background: #fee2e2;
+  color: #b91c1c;
+  padding: 6px 14px;
+}
+
+.btn-delete:hover {
+  background: #fecaca;
+}
+
+.error-message {
+  margin-top: 10px;
+  padding: 10px 14px;
+  background: #fef2f2;
+  border-left: 4px solid #dc2626;
+  border-radius: 4px;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+/* ===== Thống kê ===== */
+.statistics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.stat-card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.stat-value {
+  display: block;
+  font-size: 30px;
+  font-weight: 700;
+  color: #2563eb;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #64748b;
+}
+
+/* ===== Bộ lọc ===== */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.btn-filter {
+  background: #fff;
+  color: #475569;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-filter:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.btn-filter.active {
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #fff;
+}
+
+/* ===== Bảng ===== */
 .student-table {
   width: 100%;
   border-collapse: collapse;
   background: #fff;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
-}
-
-.student-table th,
-.student-table td {
-  padding: 10px 12px;
-  border-bottom: 1px solid var(--border);
-  text-align: left;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .student-table th {
-  background: #eef2fa;
+  background: #f8fafc;
+  text-align: left;
+  padding: 12px 14px;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  color: #64748b;
+  border-bottom: 1px solid #e2e8f0;
 }
 
-.gioi {
-  color: #1e8e3e;
-  font-weight: 600;
+.student-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid #f1f5f9;
 }
 
-.dat {
-  color: #b26a00;
-}
-
-.truot {
-  color: #c0392b;
-  font-weight: 600;
-}
-
-.btn-delete {
-  border-color: #e5a0a0;
-  color: #c0392b;
-}
-
-.empty {
-  padding: 16px;
-  background: #fff;
-  border-radius: 8px;
+.student-table tbody tr:hover {
+  background: #f8fafc;
 }
