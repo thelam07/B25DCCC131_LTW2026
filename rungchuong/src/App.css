@@ -100,3 +100,145 @@
 .option.correct {
   background: #a5d6a7;
 }
+
+/* ===== Trang chủ ===== */
+.home h1 {
+  color: #b8860b;
+}
+
+.rules {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px 16px;
+}
+
+.start-form {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.start-form input {
+  padding: 8px;
+  font-size: 15px;
+}
+
+/* ===== Màn hình thi ===== */
+.play-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.timer {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.timer.danger {
+  color: #d32f2f;
+}
+
+.scoreboard .score {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.cells {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cell {
+  width: 32px;
+  height: 32px;
+  line-height: 28px;
+  text-align: center;
+  border: 2px solid transparent;
+  border-radius: 4px;
+  background: #bdbdbd;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+.cell.correct {
+  background: #43a047;
+}
+
+.cell.current {
+  border: 3px solid #212121;
+  color: #212121;
+}
+
+.question-card {
+  margin-top: 16px;
+  padding: 16px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.question-meta {
+  color: #555;
+}
+
+.answer-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.answer-btn {
+  min-height: 52px;
+  padding: 12px;
+  font-size: 16px;
+  text-align: left;
+  border: 1px solid #90a4ae;
+  border-radius: 6px;
+  background: #eceff1;
+  cursor: pointer;
+}
+
+.answer-btn:hover:not(:disabled) {
+  background: #cfd8dc;
+}
+
+.answer-btn:disabled {
+  cursor: default;
+  color: #222;
+}
+
+.answer-btn.pending {
+  background: #fdd835;
+}
+
+.answer-btn.correct {
+  background: #66bb6a;
+}
+
+.answer-btn.wrong {
+  background: #e53935;
+  color: #fff;
+}
+
+/* ===== Kết quả ===== */
+.result .actions {
+  display: flex;
+  gap: 12px;
+}
+
+.bell {
+  display: inline-block;
+  font-size: 64px;
+  animation: ring 0.6s ease-in-out infinite;
+  transform-origin: top center;
+}
+
+@keyframes ring {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(20deg); }
+  75% { transform: rotate(-20deg); }
+}
