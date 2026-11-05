@@ -10,7 +10,7 @@ const getVariant = (index, status, selected, answer) => {
   return '';
 };
 
-const QuestionCard = ({ question, number, total, status, selected, onChoose }) => (
+const QuestionCard = ({ question, number, total, status, selected, hidden, onChoose }) => (
   <div className="question-card">
     <p className="question-meta">
       {`Câu ${number}/${total} · ${question.topic} · ${LEVELS[question.level]}`}
@@ -24,6 +24,7 @@ const QuestionCard = ({ question, number, total, status, selected, onChoose }) =
           text={option}
           variant={getVariant(index, status, selected, question.answer)}
           disabled={status !== 'answering'}
+          hidden={index === hidden}
           onClick={() => onChoose(index)}
         />
       ))}

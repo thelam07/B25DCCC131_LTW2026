@@ -3,10 +3,13 @@ import { useNavigate } from 'react-router-dom';
 import QuestionCard from '../components/QuestionCard';
 import Timer from '../components/Timer';
 import ScoreBoard from '../components/ScoreBoard';
-import { TIME_PER_QUESTION } from '../data';
+import Helpers from '../components/Helpers';
+import { EXTRA_TIME, TIME_PER_QUESTION } from '../data';
 import { calcScore, getRank } from '../utils';
 
-const Play = ({ questions, playerName }) => {
+const KEYS = ['1', '2', '3', '4'];
+
+const Play = ({ questions, playerName, onFinish }) => {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [answers, setAnswers] = useState([]);
@@ -14,6 +17,9 @@ const Play = ({ questions, playerName }) => {
   const [status, setStatus] = useState('answering');
   const [selected, setSelected] = useState(null);
   const [timeLeft, setTimeLeft] = useState(TIME_PER_QUESTION);
+  const [used, setUsed] = useState({ fifty: false, extra: false, lifeline: false });
+  const [hidden, setHidden] = useState(null);
+  const [lifelineOn, setLifelineOn] = useState(false);
 
   const total = questions.length;
   const question = questions[index];
@@ -21,40 +27,65 @@ const Play = ({ questions, playerName }) => {
 
   const finish = (finalAnswers, reason) => {
     const finalScore = calcScore(finalAnswers);
-    navigate('/result', {
-      replace: true,
-      state: {
-        name: playerName,
-        score: finalScore,
-        rank: getRank(finalScore),
-        correctCount: finalAnswers.filter((a) => a.correct).length,
-        reason,
-      },
-    });
+    const result = {
+      name: playerName,
+      score: finalScore,
+      rank: getRank(finalScore),
+      correctCount: finalAnswers.filter((a) => a.correct).length,
+    };
+    onFinish(result);
+    navigate('/result', { replace: true, state: { ...result, reason } });
   };
 
   const goNext = () => {
     const correct = selected === question.answer;
-    const newAnswers = [...answers, { id: question.id, level: question.level, correct }];
+    const saved = !correct && lifelineOn;
+    const newAnswers = [
+      ...answers,
+      { id: question.id, level: question.level, correct, saved },
+    ];
     const isLast = index === total - 1;
 
-    if (correct && !isLast) {
+    if ((correct || saved) && !isLast) {
       setAnswers(newAnswers);
       setIndex(index + 1);
       setSelected(null);
+      setHidden(null);
+      setLifelineOn(false);
       setTimeLeft(TIME_PER_QUESTION);
       setStatus('answering');
       return;
     }
 
-    if (correct) finish(newAnswers, 'bell');
-    else finish(newAnswers, selected === null ? 'timeout' : 'wrong');
+    if (correct || saved) {
+      finish(newAnswers, newAnswers.every((a) => a.correct) ? 'bell' : 'completed');
+    } else {
+      finish(newAnswers, selected === null ? 'timeout' : 'wrong');
+    }
   };
 
   const handleChoose = (optionIndex) => {
-    if (status !== 'answering') return;
+    if (status !== 'answering' || optionIndex === hidden) return;
     setSelected(optionIndex);
     setStatus('locked');
+  };
+
+  const handleFifty = () => {
+    const wrongOptions = question.options
+      .map((_, i) => i)
+      .filter((i) => i !== question.answer);
+    setHidden(wrongOptions[Math.floor(Math.random() * wrongOptions.length)]);
+    setUsed({ ...used, fifty: true });
+  };
+
+  const handleExtra = () => {
+    setTimeLeft((t) => t + EXTRA_TIME);
+    setUsed({ ...used, extra: true });
+  };
+
+  const handleLifeline = () => {
+    setLifelineOn(true);
+    setUsed({ ...used, lifeline: true });
   };
 
   // Đồng hồ: chỉ chạy khi đang trả lời
@@ -84,6 +115,26 @@ const Play = ({ questions, playerName }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
 
+  // Phím tắt 1–4 chọn đáp án A–D
+  useEffect(() => {
+    const handleKey = (e) => {
+      const optionIndex = KEYS.indexOf(e.key);
+      if (status !== 'answering' || optionIndex === -1 || optionIndex === hidden) return;
+      setSelected(optionIndex);
+      setStatus('locked');
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, [status, hidden]);
+
+  // Tiêu đề tab
+  useEffect(() => {
+    document.title = `Câu ${index + 1}/${total} – ${score} điểm`;
+    return () => {
+      document.title = 'Rung chuông vàng';
+    };
+  }, [index, total, score]);
+
   return (
     <div className="play">
       <div className="play-header">
@@ -91,12 +142,21 @@ const Play = ({ questions, playerName }) => {
         <Timer timeLeft={timeLeft} />
       </div>
       <ScoreBoard score={score} total={total} answers={answers} current={index} />
+      <Helpers
+        used={used}
+        lifelineOn={lifelineOn}
+        disabled={status !== 'answering'}
+        onFifty={handleFifty}
+        onExtra={handleExtra}
+        onLifeline={handleLifeline}
+      />
       <QuestionCard
         question={question}
         number={index + 1}
         total={total}
         status={status}
         selected={selected}
+        hidden={hidden}
         onChoose={handleChoose}
       />
     </div>

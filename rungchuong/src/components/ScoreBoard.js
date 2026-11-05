@@ -1,6 +1,7 @@
 const getCellClass = (answer, isCurrent) => {
   const classes = ['cell'];
   if (answer && answer.correct) classes.push('correct');
+  if (answer && answer.saved) classes.push('saved');
   if (isCurrent) classes.push('current');
   return classes.join(' ');
 };

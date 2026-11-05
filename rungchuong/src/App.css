@@ -242,3 +242,32 @@
   25% { transform: rotate(20deg); }
   75% { transform: rotate(-20deg); }
 }
+
+/* ===== Bài 3 ===== */
+.record {
+  font-weight: bold;
+  color: #b8860b;
+}
+
+.helpers {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.btn.helper.on {
+  background: #fb8c00;
+}
+
+.btn.danger {
+  margin-top: 12px;
+  background: #c62828;
+}
+
+.answer-btn.hidden {
+  visibility: hidden;
+}
+
+.cell.saved {
+  background: #fb8c00;
+}

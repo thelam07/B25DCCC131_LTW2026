@@ -1,10 +1,10 @@
-const AnswerButton = ({ letter, text, variant, disabled, onClick }) => (
+const AnswerButton = ({ letter, text, variant, disabled, hidden, onClick }) => (
   <button
-    className={`answer-btn ${variant}`}
-    disabled={disabled}
+    className={`answer-btn ${variant} ${hidden ? 'hidden' : ''}`}
+    disabled={disabled || hidden}
     onClick={onClick}
   >
-    {`${letter}. ${text}`}
+    {hidden ? '' : `${letter}. ${text}`}
   </button>
 );
 
